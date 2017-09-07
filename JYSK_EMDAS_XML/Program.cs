@@ -61,8 +61,10 @@ namespace JYSK_EMDAS_XML //Version 0.1.2 //
                 writer.WriteElementString("CouOfDisCodHEA55", (ws.Cells["B14"].Value ?? "").ToString());
                 writer.WriteElementString("InlTraModHEA75", (ws.Cells["B48"].Value ?? "").ToString());
                 writer.WriteElementString("TraModAtBorHEA76", (ws.Cells["B49"].Value ?? "").ToString());
-                //writer.WriteElementString("ConIndHEA96", "a");
-                writer.WriteElementString("ECSAccDocHEA601", "LV");
+            //writer.WriteElementString("ConIndHEA96", "a");
+            writer.WriteElementString("IdeOfMeaOfTraAtDHEA78", (ws.Cells["B45"].Value ?? "").ToString());
+            writer.WriteElementString("IdeOfMeaOfTraCroHEA85", (ws.Cells["B46"].Value ?? "").ToString());
+            writer.WriteElementString("ECSAccDocHEA601", "LV");
             //writer.WriteElementString("TotNumOfIteHEA305", "a");
             writer.WriteElementString("DecPlaHEA394", (ws.Cells["B71"].Value ?? "").ToString());
             //writer.WriteElementString("DecDatHEA383", "a");
@@ -138,18 +140,24 @@ namespace JYSK_EMDAS_XML //Version 0.1.2 //
                     writer.WriteElementString("ProReqGDI1", (ws.Cells[row, 17].Value ?? "").ToString());
                     writer.WriteElementString("PreProGDI1", (ws.Cells[row, 18].Value ?? "").ToString());
                     writer.WriteElementString("ComNatProGIM1", (ws.Cells[row, 19].Value ?? "").ToString());
-                    writer.WriteElementString("StaValAmoGDI1", (ws.Cells[row, 5].Value ?? "").ToString());
+                //writer.WriteElementString("StaValAmoGDI1", (ws.Cells[row, 5].Value ?? "").ToString()); R - bet nepareizs....
+                    writer.WriteElementString("AmoInvGDI1", (ws.Cells[row, 5].Value ?? "").ToString());
                     writer.WriteElementString("CouOfOriGDI1", (ws.Cells[row, 8].Value ?? "").ToString());
                     writer.WriteElementString("SupUniGDI1", (ws.Cells[row, 25].Value ?? "").ToString());
-                    // PREVIOUS ADMINISTRATIVE REFERENCES //
+                // PREVIOUS ADMINISTRATIVE REFERENCES //
+                if (ws.Cells[row, 7].Value == null)
+                {
+                    goto prevAdmRef;
+                    }
                     writer.WriteStartElement("PREADMREFAR2");
                     writer.WriteElementString("PreDocTypAR21", (ws.Cells[row, 16].Value ?? "").ToString());
                     writer.WriteElementString("PreDocRefAR26", (ws.Cells[row, 7].Value ?? "").ToString());
                     //writer.WriteElementString("PreDocRefLNG", (ws.Cells[row, 2].Value ?? "").ToString());
                     writer.WriteElementString("PreDocCatPREADMREF21", (ws.Cells[row, 15].Value ?? "").ToString());
                     writer.WriteEndElement();
-                    // PRODUCED DOCUMENTS/CERTIFICATES //
-                    for (i = 26; i > 10; i=i+3)
+                   prevAdmRef:
+                // PRODUCED DOCUMENTS/CERTIFICATES //
+                for (i = 26; i > 10; i=i+3)
                     {
                     if (ws.Cells[row, i].Value == null)
                     {
