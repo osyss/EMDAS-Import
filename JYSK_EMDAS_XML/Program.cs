@@ -253,9 +253,10 @@ namespace JYSK_EMDAS_XML //Version 0.1.2 //
 
                 writer.WriteStartElement("TRADAT");
                 writer.WriteElementString("CurTRD1", (ws.Cells["B58"].Value ?? "").ToString());
-                //writer.WriteElementString("TotAmoInvTRD1", (ws.Cells["B58"].Value ?? "").ToString());
-                //writer.WriteElementString("ExcRatTRD1", (ws.Cells["B58"].Value ?? "").ToString());
-                writer.WriteEndElement();
+            //writer.WriteElementString("TotAmoInvTRD1", (ws.Cells["B58"].Value ?? "").ToString());
+            //writer.WriteElementString("ExcRatTRD1", (ws.Cells["B58"].Value ?? "").ToString());
+            writer.WriteElementString("NatOfTraFirCodTRD1", (ws.Cells["B59"].Value ?? "").ToString());
+            writer.WriteEndElement();
 
                 // DEFERRED OR POSTPONED PAYMENT //
 
