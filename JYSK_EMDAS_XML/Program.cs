@@ -1,296 +1,223 @@
 ﻿using OfficeOpenXml;
 using System;
+using System.Globalization;
 using System.IO;
-using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Xml;
 
-namespace JYSK_EMDAS_XML //Version 0.1.2 //
+namespace JYSK_EMDAS_XML //version 1.2
 {
     class Program
     {
         static void Main(string[] args)
         {
-            
             Console.WriteLine("Converting Excel....");
-            string curr = Directory.GetCurrentDirectory();
-                FileInfo fileName = new FileInfo(curr+"\\EX1.xlsx");
-                ExcelPackage pck = new ExcelPackage(fileName);
-                var ws = pck.Workbook.Worksheets["EX1 sagatave"];
-
-            System.Globalization.CultureInfo customCulture = (System.Globalization.CultureInfo)System.Threading.Thread.CurrentThread.CurrentCulture.Clone();
-            customCulture.NumberFormat.NumberDecimalSeparator = ".";
-
-            System.Threading.Thread.CurrentThread.CurrentCulture = customCulture;
-
-            var row = 76;
-                var n = 76;
-                var i = 22;
-
-                var rng = new Random();
-                int first = rng.Next(10);
-                int second = rng.Next(10);
-                int third = rng.Next(10);
-
-                XmlWriterSettings xmlWriterSettings = new XmlWriterSettings();
-            xmlWriterSettings.Encoding = new UTF8Encoding(false);
-                MemoryStream ms = new MemoryStream();
-                XmlWriter writer = XmlWriter.Create(ms, xmlWriterSettings);
-            // MESSAGE //
-
-            writer.WriteStartElement("CC515A");
-                //writer.WriteElementString("SynIdeMES1", "MESSAGE.Syntax identifier - a4");
-                //writer.WriteElementString("SynVerNumMES2", "MESSAGE.Syntax version number - n1");
-                //writer.WriteElementString("MesSenMES3", " MESSAGE.Message sender  - an..35");
-                //writer.WriteElementString("MesRecMES6", " MESSAGE.Message recipient - an..35");
-                writer.WriteElementString("DatOfPreMES9", DateTime.Now.ToString("yyMMdd"));
-                writer.WriteElementString("TimOfPreMES10", DateTime.Now.ToString("HHmm"));
-                //writer.WriteElementString("IntConRefMES11", "MESSAGE.Interchange control reference - an..14");
-                //writer.WriteElementString("MesIdeMES19", "MESSAGE.Message identification  - an..14");
-                writer.WriteElementString("MesTypMES20", "CC515A");
-
-                // HEADER //
-
-                writer.WriteStartElement("HEAHEA");
-                //writer.WriteElementString("RefNumHEA4", "MESSAGE - HEADER.Reference number  - an..22");
-                writer.WriteElementString("TypOfDecHEA24", (ws.Cells["B4"].Value ?? "").ToString());
-                writer.WriteElementString("CouOfDesCodHEA30", (ws.Cells["B28"].Value ?? "").ToString());
-                writer.WriteElementString("AgrLocOfGooCodHEA38", (ws.Cells["B53"].Value ?? "").ToString());
-                writer.WriteElementString("AgrLocOfGooHEA39", (ws.Cells["B52"].Value ?? "").ToString());
-                writer.WriteElementString("AgrLocOfGooHEA39LNG", (ws.Cells["B14"].Value ?? "").ToString());
-                writer.WriteElementString("CouOfDisCodHEA55", (ws.Cells["B14"].Value ?? "").ToString());
-                writer.WriteElementString("InlTraModHEA75", (ws.Cells["B48"].Value ?? "").ToString());
-                writer.WriteElementString("TraModAtBorHEA76", (ws.Cells["B49"].Value ?? "").ToString());
-            //writer.WriteElementString("ConIndHEA96", "a");
-            writer.WriteElementString("IdeOfMeaOfTraAtDHEA78", (ws.Cells["B45"].Value ?? "").ToString());
-            writer.WriteElementString("IdeOfMeaOfTraCroHEA85", (ws.Cells["B46"].Value ?? "").ToString());
-            writer.WriteElementString("ECSAccDocHEA601", "LV");
-            //writer.WriteElementString("TotNumOfIteHEA305", "a");
-            writer.WriteElementString("DecPlaHEA394", (ws.Cells["B71"].Value ?? "").ToString());
-            //writer.WriteElementString("DecDatHEA383", "a");
-                writer.WriteElementString("TypOfDecBx12HEA651", (ws.Cells["C4"].Value ?? "").ToString());
-                writer.WriteEndElement();
-
-                // TRADER EXPORTER //
-
-                writer.WriteStartElement("TRAEXPEX1");
-                writer.WriteElementString("NamEX17", (ws.Cells["B17"].Value ?? "").ToString());
-                writer.WriteElementString("StrAndNumEX122", (ws.Cells["B18"].Value ?? "").ToString());
-                writer.WriteElementString("PosCodEX123", (ws.Cells["B20"].Value ?? "").ToString());
-                writer.WriteElementString("CitEX124", (ws.Cells["B19"].Value ?? "").ToString());
-                writer.WriteElementString("CouEX125", (ws.Cells["B21"].Value ?? "").ToString());
-                writer.WriteElementString("TINEX159", (ws.Cells["B16"].Value ?? "").ToString());
-                writer.WriteEndElement();
-
-                // TRADER CONSIGNEE //
-
-                writer.WriteStartElement("TRACONCE1");
-                writer.WriteElementString("NamCE17", (ws.Cells["B24"].Value ?? "").ToString());
-                writer.WriteElementString("StrAndNumCE122", (ws.Cells["B25"].Value ?? "").ToString());
-                writer.WriteElementString("PosCodCE123", (ws.Cells["B27"].Value ?? "").ToString());
-                writer.WriteElementString("CitCE124", (ws.Cells["B26"].Value ?? "").ToString());
-                writer.WriteElementString("CouCE125", (ws.Cells["B28"].Value ?? "").ToString());
-                writer.WriteEndElement();
-
-                // CUSTOMS OFFICE - EXPORT //
-
-                writer.WriteStartElement("CUSOFFEXPERT");
-                writer.WriteElementString("RefNumERT1", (ws.Cells["B35"].Value ?? "").ToString());
-                writer.WriteEndElement();
-
-                // CUSTOMS OFFICE - EXIT //
-
-                writer.WriteStartElement("CUSOFFEXIEXT");
-                writer.WriteElementString("RefNumEXT1", (ws.Cells["B36"].Value ?? "").ToString());
-                writer.WriteEndElement();
-
-                // CONTROL RESULTS //
-
-                //writer.WriteStartElement("CONRESERS");
-                //writer.WriteElementString("ConResCodERS16", "MESSAGE - CONTROL RESULT.Control result code - an2");
-                //writer.WriteElementString("DatLimERS69", "MESSAGE - CONTROL RESULT.Date limit - n8");
-                //writer.WriteEndElement();
-
-                // SEALS INFO //
-
-               // writer.WriteStartElement("SEAINFSLI");
-               // writer.WriteElementString("SeaNumSLI2", "MESSAGE - SEALS INFO.Seals number - n..4 ");
-                // SEALS ID //
-                //writer.WriteStartElement("SEAIDSID");
-                //writer.WriteElementString("SeaIdeSID1", "MESSAGE - SEALS INFO - SEALS ID.Seals identity - an..20");
-                //writer.WriteEndElement();
-                //writer.WriteEndElement();
-
-
-                // GOODS ITEM //
-
-                for (n = 76; n > 50; n++)
+            string currentDirectory = Directory.GetCurrentDirectory();
+            ExcelWorksheet worksheet = new ExcelPackage(new FileInfo(currentDirectory + "\\IM.xlsx")).Workbook.Worksheets["IM sagatave"];
+            CultureInfo cultureInfo = (CultureInfo)Thread.CurrentThread.CurrentCulture.Clone();
+            cultureInfo.NumberFormat.NumberDecimalSeparator = ".";
+            Thread.CurrentThread.CurrentCulture = cultureInfo;
+            int index1 = 89;
+            Random random = new Random();
+            random.Next(10);
+            random.Next(10);
+            random.Next(10);
+            XmlWriterSettings settings = new XmlWriterSettings();
+            settings.Encoding = (Encoding)new UTF8Encoding(false);
+            MemoryStream memoryStream = new MemoryStream();
+            XmlWriter xmlWriter = XmlWriter.Create((Stream)memoryStream, settings);
+            xmlWriter.WriteStartElement("IcsIE");
+            xmlWriter.WriteElementString("MesTypMES20", "I01");
+            xmlWriter.WriteStartElement("HEAHEA");
+            xmlWriter.WriteElementString("RefNumEPT1", (worksheet.Cells["B36"].Value ?? (object)"").ToString());
+            xmlWriter.WriteElementString("CusOffENT730", (worksheet.Cells["B37"].Value ?? (object)"").ToString());
+            xmlWriter.WriteElementString("DecWorDatHEA999", DateTime.Now.ToString("yyyy-MM-ddT00:00:00.000"));
+            xmlWriter.WriteElementString("DecPlaHEA394", (worksheet.Cells["G12"].Value ?? (object)"").ToString());
+            xmlWriter.WriteElementString("TypOfOpeHEA994", (worksheet.Cells["B4"].Value ?? (object)"").ToString());
+            xmlWriter.WriteElementString("OpeCodHEA995", (worksheet.Cells["C4"].Value ?? (object)"").ToString());
+            xmlWriter.WriteElementString("TotGroMasHEA307", (worksheet.Cells["B68"].Value ?? (object)"").ToString());
+            xmlWriter.WriteElementString("CouOfDisCodHEA55", (worksheet.Cells["B32"].Value ?? (object)"").ToString());
+            xmlWriter.WriteElementString("TypOfPriGHEA1003", (worksheet.Cells["B8"].Value ?? (object)"").ToString());
+            xmlWriter.WriteElementString("IdeOfMeaOfTraAtDHEA78", (worksheet.Cells["B50"].Value ?? (object)"").ToString());
+            xmlWriter.WriteElementString("DelReqCodHEA992", (worksheet.Cells["B46"].Value ?? (object)"").ToString());
+            xmlWriter.WriteElementString("DesOfDelReqHEA993", (worksheet.Cells["B47"].Value ?? (object)"").ToString());
+            xmlWriter.WriteElementString("NatOfMeaOfTraCroHEA87", (worksheet.Cells["B52"].Value ?? (object)"").ToString());
+            xmlWriter.WriteElementString("TraModAtBorHEA76", (worksheet.Cells["B54"].Value ?? (object)"").ToString());
+            xmlWriter.WriteElementString("InlTraModHEA75", (worksheet.Cells["B53"].Value ?? (object)"").ToString());
+            xmlWriter.WriteElementString("TypOfDeaHEA995", (worksheet.Cells["B66"].Value ?? (object)"").ToString());
+            xmlWriter.WriteElementString("Cur126", (worksheet.Cells["C72"].Value ?? (object)"").ToString());
+            xmlWriter.WriteElementString("DefPayVGA48", (worksheet.Cells["E66"].Value ?? (object)"").ToString());
+            xmlWriter.WriteElementString("CusProCodGDS379", (worksheet.Cells["C1"].Value ?? (object)"").ToString());
+            xmlWriter.WriteEndElement();
+            xmlWriter.WriteStartElement("TRACONCO1");
+            xmlWriter.WriteElementString("NamCO17", (worksheet.Cells["B18"].Value ?? (object)"").ToString());
+            xmlWriter.WriteElementString("StrAndNumCO122", (worksheet.Cells["B19"].Value ?? (object)"").ToString());
+            xmlWriter.WriteElementString("PosCodCO123", (worksheet.Cells["B21"].Value ?? (object)"").ToString());
+            xmlWriter.WriteElementString("CitCO124", (worksheet.Cells["B20"].Value ?? (object)"").ToString());
+            xmlWriter.WriteElementString("CouCO125", (worksheet.Cells["B22"].Value ?? (object)"").ToString());
+            xmlWriter.WriteEndElement();
+            xmlWriter.WriteStartElement("TRACONCE1");
+            xmlWriter.WriteElementString("NamCE17", (worksheet.Cells["B25"].Value ?? (object)"").ToString());
+            xmlWriter.WriteElementString("StrAndNumCE122", (worksheet.Cells["B26"].Value ?? (object)"").ToString());
+            xmlWriter.WriteElementString("PosCodCE123", (worksheet.Cells["B28"].Value ?? (object)"").ToString());
+            xmlWriter.WriteElementString("CitCE124", (worksheet.Cells["B27"].Value ?? (object)"").ToString());
+            xmlWriter.WriteElementString("CouCE125", (worksheet.Cells["B29"].Value ?? (object)"").ToString());
+            xmlWriter.WriteElementString("TINCE159", (worksheet.Cells["B24"].Value ?? (object)"").ToString());
+            xmlWriter.WriteEndElement();
+            xmlWriter.WriteStartElement("TRAREP");
+            xmlWriter.WriteElementString("NamTRE1", (worksheet.Cells["B11"].Value ?? (object)"").ToString());
+            xmlWriter.WriteElementString("StrAndNumTRE1", (worksheet.Cells["B12"].Value ?? (object)"").ToString());
+            xmlWriter.WriteElementString("PosCodTRE1", (worksheet.Cells["B14"].Value ?? (object)"").ToString());
+            xmlWriter.WriteElementString("CitTRE1", (worksheet.Cells["B13"].Value ?? (object)"").ToString());
+            xmlWriter.WriteElementString("CouCodTRE1", (worksheet.Cells["B15"].Value ?? (object)"").ToString());
+            xmlWriter.WriteElementString("TINTRE1", (worksheet.Cells["B10"].Value ?? (object)"").ToString());
+            xmlWriter.WriteEndElement();
+            xmlWriter.WriteStartElement("NOTPAR670");
+            xmlWriter.WriteElementString("NamNOTPAR672", (worksheet.Cells["G10"].Value ?? (object)"").ToString());
+            xmlWriter.WriteElementString("StrNumNOTPAR673", (worksheet.Cells["G11"].Value ?? (object)"").ToString());
+            xmlWriter.WriteElementString("PosCodNOTPAR676", (worksheet.Cells["G13"].Value ?? (object)"").ToString());
+            xmlWriter.WriteElementString("CitNOTPAR674", (worksheet.Cells["G12"].Value ?? (object)"").ToString());
+            xmlWriter.WriteElementString("CouCodNOTPAR675", (worksheet.Cells["G14"].Value ?? (object)"").ToString());
+            xmlWriter.WriteElementString("TINNOTPAR671", (worksheet.Cells["G9"].Value ?? (object)"").ToString());
+            xmlWriter.WriteEndElement();
+            xmlWriter.WriteStartElement("GDSLOC");
+            xmlWriter.WriteStartElement("GDSLOCStr");
+            xmlWriter.WriteElementString("CitGdsLoc", (worksheet.Cells["B57"].Value ?? (object)"").ToString());
+            xmlWriter.WriteElementString("StrGdsLoc", (worksheet.Cells["B58"].Value ?? (object)"").ToString());
+            xmlWriter.WriteElementString("StrNumLoc", (worksheet.Cells["F56"].Value ?? (object)"").ToString());
+            xmlWriter.WriteElementString("PosCodGdsLoc", (worksheet.Cells["F57"].Value ?? (object)"").ToString());
+            xmlWriter.WriteElementString("CouCodGdsLoc", (worksheet.Cells["F58"].Value ?? (object)"").ToString());
+            xmlWriter.WriteEndElement();
+            xmlWriter.WriteEndElement();
+            xmlWriter.WriteStartElement("WAR");
+            xmlWriter.WriteElementString("WarTypWARTyp", (worksheet.Cells["B61"].Value ?? (object)"").ToString());
+            xmlWriter.WriteElementString("WarTypWARId", (worksheet.Cells["B62"].Value ?? (object)"").ToString());
+            xmlWriter.WriteElementString("WarTypWARCou", (worksheet.Cells["B63"].Value ?? (object)"").ToString());
+            xmlWriter.WriteEndElement();
+            for (int index2 = 89; index2 > 50 && worksheet.Cells[index2, 1].Value != null; ++index2)
+            {
+                xmlWriter.WriteStartElement("GOOITEGDS");
+                xmlWriter.WriteElementString("GooDesGDS23", (worksheet.Cells[index1, 20].Value ?? (object)"").ToString());
+                xmlWriter.WriteElementString("IteNumGDS7", (worksheet.Cells[index1, 1].Value ?? (object)"").ToString());
+                xmlWriter.WriteElementString("IteNumB32F1", (worksheet.Cells[index1, 1].Value ?? (object)"").ToString());
+                xmlWriter.WriteElementString("ComCodTarCodGDS10", (worksheet.Cells[index1, 6].Value ?? (object)"").ToString());
+                xmlWriter.WriteElementString("CouOfOriCodGDS63", (worksheet.Cells[index1, 8].Value ?? (object)"").ToString());
+                xmlWriter.WriteElementString("GroMasGDS46", (worksheet.Cells[index1, 4].Value ?? (object)"").ToString());
+                xmlWriter.WriteElementString("NetMasGDS48", (worksheet.Cells[index1, 3].Value ?? (object)"").ToString());
+                xmlWriter.WriteElementString("CusProCodGDS379", (worksheet.Cells[index1, 24].Value ?? (object)"").ToString() + (worksheet.Cells[index1, 25].Value ?? (object)"").ToString());
+                xmlWriter.WriteElementString("AddCusProCodGDS340", (worksheet.Cells[index1, 21].Value ?? (object)"").ToString());
+                xmlWriter.WriteElementString("GooInvB42", (worksheet.Cells[index1, 5].Value ?? (object)"").ToString());
+                xmlWriter.WriteElementString("AppRecMet", (worksheet.Cells[index1, 28].Value ?? (object)"").ToString());
+                xmlWriter.WriteElementString("PreB36", (worksheet.Cells[index1, 27].Value ?? (object)"").ToString());
+                if (worksheet.Cells[index1, 11].Value != null)
                 {
-                    if (ws.Cells[n, 1].Value == null)
-                    {
-                        goto afterGoods;
-                    }
-
-                    writer.WriteStartElement("GOOITEGDS");
-                    writer.WriteElementString("IteNumGDS7", (ws.Cells[row, 1].Value ?? "").ToString());
-                    writer.WriteElementString("GooDesGDS23", (ws.Cells[row, 13].Value ?? "").ToString());
-                    //writer.WriteElementString("GooDesGDS23LNG", (ws.Cells[row, 8].Value ?? "").ToString());
-                    writer.WriteElementString("GroMasGDS46", (ws.Cells[row, 4].Value ?? "").ToString());
-                    writer.WriteElementString("NetMasGDS48", (ws.Cells[row, 3].Value ?? "").ToString());
-                    writer.WriteElementString("ProReqGDI1", (ws.Cells[row, 17].Value ?? "").ToString());
-                    writer.WriteElementString("PreProGDI1", (ws.Cells[row, 18].Value ?? "").ToString());
-                    writer.WriteElementString("ComNatProGIM1", (ws.Cells[row, 19].Value ?? "").ToString());
-                //writer.WriteElementString("StaValAmoGDI1", (ws.Cells[row, 5].Value ?? "").ToString()); R - bet nepareizs....
-                    writer.WriteElementString("AmoInvGDI1", (ws.Cells[row, 5].Value ?? "").ToString());
-                    writer.WriteElementString("CouOfOriGDI1", (ws.Cells[row, 8].Value ?? "").ToString());
-                    writer.WriteElementString("SupUniGDI1", (ws.Cells[row, 25].Value ?? "").ToString());
-                // PREVIOUS ADMINISTRATIVE REFERENCES //
-                if (ws.Cells[row, 7].Value == null)
-                {
-                    goto prevAdmRef;
-                    }
-                    writer.WriteStartElement("PREADMREFAR2");
-                    writer.WriteElementString("PreDocTypAR21", (ws.Cells[row, 16].Value ?? "").ToString());
-                    writer.WriteElementString("PreDocRefAR26", (ws.Cells[row, 7].Value ?? "").ToString());
-                    //writer.WriteElementString("PreDocRefLNG", (ws.Cells[row, 2].Value ?? "").ToString());
-                    writer.WriteElementString("PreDocCatPREADMREF21", (ws.Cells[row, 15].Value ?? "").ToString());
-                    writer.WriteEndElement();
-                   prevAdmRef:
-                // PRODUCED DOCUMENTS/CERTIFICATES //
-                for (i = 26; i > 10; i=i+3)
-                    {
-                    if (ws.Cells[row, i].Value == null)
-                    {
-                        goto afterProDoc;
-                    }
-                    writer.WriteStartElement("PRODOCDC2");
-                    writer.WriteElementString("DocTypDC21", (ws.Cells[row, i].Value ?? "").ToString());
-                    writer.WriteElementString("DocRefDC23", (ws.Cells[row, i+1].Value ?? "").ToString());
-                    //writer.WriteElementString("DocRefDCLNG", (ws.Cells[row, 2].Value ?? "").ToString());
-                    writer.WriteEndElement();
-                    }
-                    afterProDoc:
-                    // SPECIAL MENTIONS //
-                    //writer.WriteStartElement("SPEMENMT2");
-                    //writer.WriteElementString("AddInfCodMT23", "MESSAGE - GOODS ITEM - SPECIAL MENTIONS.Additional information coded - an..5");
-                    //writer.WriteEndElement();
-                    // TRADER EXPORTER //
-                    //writer.WriteStartElement("TRACONEX2");
-                    //writer.WriteElementString("TINEX259", "MESSAGE - GOODS ITEM - (EXPORTER) TRADER.TIN - an..17");
-                    //writer.WriteEndElement();
-                    // COMMODITY CODE //
-                    writer.WriteStartElement("COMCODGODITM");
-                    writer.WriteElementString("ComNomCMD1", (ws.Cells[row, 6].Value ?? "").ToString());
-                    writer.WriteElementString("TARCodCMD1", (ws.Cells[row, 10].Value ?? "").ToString());
-                    writer.WriteElementString("TARFirAddCodCMD1", (ws.Cells[row, 23].Value ?? "").ToString());
-                    //writer.WriteElementString("TARSecAddCodCMD1", (ws.Cells[row, 2].Value ?? "").ToString());
-                    writer.WriteEndElement();
-                    // CALCULATION TAXES //
-                    //writer.WriteStartElement("CALTAXGOD");
-                    //writer.WriteElementString("TypOfTaxCTX1", "MESSAGE - GOODS ITEM - (TAXES) CALCULATION.Type of tax - an3");
-                    //writer.WriteElementString("TaxBasCTX1", "MESSAGE - GOODS ITEM - (TAXES) CALCULATION.Tax base - n..15,2");
-                    //writer.WriteElementString("RatOfTaxCTX1", "MESSAGE - GOODS ITEM - (TAXES) CALCULATION.Rate of tax - an..15");
-                    //writer.WriteElementString("AmoOfTaxTCL1", "MESSAGE - GOODS ITEM - (TAXES) CALCULATION.Amount of tax - n..15,2");
-                    //writer.WriteElementString("MetOfPayCTX1", "MESSAGE - GOODS ITEM - (TAXES) CALCULATION.Method of payment - a1");
-                    //writer.WriteEndElement();
-                    // TRADER CONSIGNEE //
-                    //writer.WriteStartElement("TRACONCE2");
-                    //writer.WriteElementString("NamCE27", (ws.Cells[row, 2].Value ?? "").ToString());
-                    //writer.WriteElementString("StrAndNumCE222", (ws.Cells[row, 2].Value ?? "").ToString());
-                    //writer.WriteElementString("PosCodCE223", (ws.Cells[row, 2].Value ?? "").ToString());
-                    //writer.WriteElementString("CitCE224", (ws.Cells[row, 2].Value ?? "").ToString());
-                    //writer.WriteElementString("CouCE225", (ws.Cells[row, 2].Value ?? "").ToString());
-                    //writer.WriteElementString("TINCE259", (ws.Cells[row, 2].Value ?? "").ToString());
-                    //writer.WriteEndElement();
-                    // CONTAINERS //
-                    //writer.WriteStartElement("CONNR2");
-                    //writer.WriteElementString("ConNumNR21", "MESSAGE - GOODS ITEM - CONTAINERS.Container number - an..17");
-                    //writer.WriteElementString("TaxBasCTX1", "MESSAGE - GOODS ITEM - (TAXES) CALCULATION.Tax base - n..15,2");
-                    //writer.WriteElementString("RatOfTaxCTX1", "MESSAGE - GOODS ITEM - (TAXES) CALCULATION.Rate of tax - an..15");
-                    //writer.WriteElementString("AmoOfTaxTCL1", "MESSAGE - GOODS ITEM - (TAXES) CALCULATION.Amount of tax - n..15,2");
-                    //writer.WriteElementString("MetOfPayCTX1", "MESSAGE - GOODS ITEM - (TAXES) CALCULATION.Method of payment - a1");
-                    //writer.WriteEndElement();
-                    // CONTAINERS //
-                    writer.WriteStartElement("PACGS2");
-                    writer.WriteElementString("MarNumOfPacGS21", (ws.Cells[row, 22].Value ?? "").ToString());
-                    //writer.WriteElementString("MarNumOfPacGS21LNG", (ws.Cells[row, 2].Value ?? "").ToString());
-                    writer.WriteElementString("KinOfPacGS23", (ws.Cells[row, 21].Value ?? "").ToString());
-                    writer.WriteElementString("NumOfPacGS24", (ws.Cells[row, 2].Value ?? "").ToString());
-                    writer.WriteEndElement();
-
-                    writer.WriteEndElement();
-
-
-                    //do not edit
-                    row++;
+                    xmlWriter.WriteStartElement("OutGooFreAmSTA");
+                    xmlWriter.WriteElementString("AmSTAElm", (worksheet.Cells[index1, 11].Value ?? (object)"").ToString());
+                    xmlWriter.WriteElementString("AmSTAElmNat", (worksheet.Cells[index1, 13].Value ?? (object)"").ToString());
+                    xmlWriter.WriteEndElement();
                 }
-            afterGoods:
-                // ITINERARY //
-
-                //writer.WriteStartElement("ITI");
-                //writer.WriteElementString("CouOfRouCodITI1", " MESSAGE - ITINERARY.Country of routing code - a2");
-                //writer.WriteEndElement();
-
-                // TRADE DECLARANT //
-
-                writer.WriteStartElement("TRADEC");
-                writer.WriteElementString("NamTDE1", (ws.Cells["B10"].Value ?? "").ToString());
-                writer.WriteElementString("StrAndNumTDE1", (ws.Cells["B11"].Value ?? "").ToString());
-                writer.WriteElementString("PosTDE1", (ws.Cells["B13"].Value ?? "").ToString());
-                writer.WriteElementString("CiTDE1", (ws.Cells["B12"].Value ?? "").ToString());
-                writer.WriteElementString("CouCodTDE1", (ws.Cells["B14"].Value ?? "").ToString());
-                writer.WriteElementString("TINTDE1", (ws.Cells["B9"].Value ?? "").ToString());
-                writer.WriteEndElement();
-
-                // DELIVERY TERMS //
-
-                //writer.WriteStartElement("DELTER");
-                //writer.WriteElementString("IncCodTDL1", "MESSAGE - (TERMS) DELIVERY.Incoterm Code - a3");
-                //writer.WriteElementString("ComInfDELTER387", "MESSAGE - (TERMS) DELIVERY.Complement of info - an..35");
-                //writer.WriteEndElement();
-
-                // TRANSACTION DATA //
-
-                writer.WriteStartElement("TRADAT");
-                writer.WriteElementString("CurTRD1", (ws.Cells["B58"].Value ?? "").ToString());
-            //writer.WriteElementString("TotAmoInvTRD1", (ws.Cells["B58"].Value ?? "").ToString());
-            //writer.WriteElementString("ExcRatTRD1", (ws.Cells["B58"].Value ?? "").ToString());
-            writer.WriteElementString("NatOfTraFirCodTRD1", (ws.Cells["B59"].Value ?? "").ToString());
-            writer.WriteEndElement();
-
-                // DEFERRED OR POSTPONED PAYMENT //
-
-                //writer.WriteStartElement("DEFPOSPAY");
-                //writer.WriteElementString("AutRefDPP1", "MESSAGE - (PAYMENT) DEFERRED OR POSTPONED.Authorisation Reference - an..35");
-                //writer.WriteEndElement();
-
-                // IDENTIFICATION WAREHOUSE //
-
-                writer.WriteStartElement("IDEWAR");
-                writer.WriteElementString("WarTypWID1", (ws.Cells["B66"].Value ?? "").ToString());
-                writer.WriteElementString("AutCouWID1", (ws.Cells["B68"].Value ?? "").ToString()); //NULL
-                writer.WriteElementString("WarIdeWID1", (ws.Cells["B67"].Value ?? "").ToString());
-                writer.WriteEndElement();
-
-                // REPRESENTIVE STATUS //
-
-                writer.WriteStartElement("STATREP385");
-                writer.WriteElementString("RepStatCodSTATREP386", (ws.Cells["B7"].Value ?? "").ToString());
-                writer.WriteEndElement();
-
-                // WRITE XML //
-
-                writer.Flush();
-                writer.Close();
-            
-                var xmlOut = curr+"\\XML_" + DateTime.Now.ToString("yyyyMMddHHmm") + ".xml";
-                File.WriteAllText(@xmlOut, new UTF8Encoding(false).GetString(ms.ToArray()));
-
-            // CONSOLE OUT //
-
-            //Console.WriteLine(Encoding.UTF8.GetString(ms.ToArray()));
-                
-                
+                xmlWriter.WriteStartElement("PACGS2");
+                xmlWriter.WriteElementString("KinOfPacGS23", (worksheet.Cells[index1, 30].Value ?? (object)"").ToString());
+                xmlWriter.WriteElementString("MarNumOfPacGS21", (worksheet.Cells[index1, 31].Value ?? (object)"").ToString());
+                xmlWriter.WriteElementString("NumOfPacGS24", (worksheet.Cells[index1, 2].Value ?? (object)"").ToString());
+                xmlWriter.WriteEndElement();
+                if (worksheet.Cells[index1, 29].Value != null)
+                {
+                    xmlWriter.WriteStartElement("CONNR2");
+                    xmlWriter.WriteElementString("ConNumNR21", (worksheet.Cells[index1, 29].Value ?? (object)"").ToString());
+                    xmlWriter.WriteEndElement();
+                }
+                xmlWriter.WriteStartElement("PREADMREFAR2");
+                xmlWriter.WriteElementString("PreDocTyp", (worksheet.Cells[index1, 22].Value ?? (object)"").ToString());
+                xmlWriter.WriteElementString("TitAR212", (worksheet.Cells[index1, 23].Value ?? (object)"").ToString());
+                xmlWriter.WriteElementString("PreDocRefAR26", (worksheet.Cells[index1, 7].Value ?? (object)"").ToString());
+                xmlWriter.WriteEndElement();
+                int index3 = 34;
+                while (index3 > 10 && worksheet.Cells[index1, index3].Value != null)
+                {
+                    xmlWriter.WriteStartElement("PRODOCDC2");
+                    xmlWriter.WriteElementString("DocCoDC28", (worksheet.Cells[index1, index3].Value ?? (object)"").ToString());
+                    xmlWriter.WriteElementString("TitDC29", (worksheet.Cells[index1, index3 + 1].Value ?? (object)"").ToString());
+                    xmlWriter.WriteElementString("ComOfInfDC25", (worksheet.Cells[index1, index3 + 2].Value ?? (object)"").ToString());
+                    xmlWriter.WriteEndElement();
+                    index3 += 3;
+                }
+                xmlWriter.WriteEndElement();
+                ++index1;
             }
+            xmlWriter.WriteStartElement("STA");
+            xmlWriter.WriteStartElement("InvAmSTA");
+            xmlWriter.WriteElementString("CurSTAElm", (worksheet.Cells["C72"].Value ?? (object)"").ToString());
+            xmlWriter.WriteElementString("AmSTAElm", (worksheet.Cells["B72"].Value ?? (object)"").ToString());
+            xmlWriter.WriteEndElement();
+            xmlWriter.WriteStartElement("OutFreAmSTA");
+            xmlWriter.WriteElementString("CurSTAElm", (worksheet.Cells["C73"].Value ?? (object)"").ToString());
+            xmlWriter.WriteElementString("AmSTAElm", (worksheet.Cells["B73"].Value ?? (object)"").ToString());
+            if ((worksheet.Cells["G73"].Value ?? (object)"").ToString() == "Manuāli")
+                xmlWriter.WriteElementString("DivMetAmSTA", "1");
+            else if ((worksheet.Cells["G73"].Value ?? (object)"").ToString() == "Pēc svara")
+                xmlWriter.WriteElementString("DivMetAmSTA", "2");
+            else if ((worksheet.Cells["G73"].Value ?? (object)"").ToString() == "Pēc vērtības")
+                xmlWriter.WriteElementString("DivMetAmSTA", "3");
+            xmlWriter.WriteEndElement();
+            xmlWriter.WriteStartElement("InsAmSTA");
+            xmlWriter.WriteElementString("CurSTAElm", (worksheet.Cells["C74"].Value ?? (object)"").ToString());
+            xmlWriter.WriteElementString("AmSTAElm", (worksheet.Cells["B74"].Value ?? (object)"").ToString());
+            if ((worksheet.Cells["G74"].Value ?? (object)"").ToString() == "Manuāli")
+                xmlWriter.WriteElementString("DivMetAmSTA", "1");
+            else if ((worksheet.Cells["G74"].Value ?? (object)"").ToString() == "Pēc svara")
+                xmlWriter.WriteElementString("DivMetAmSTA", "2");
+            else if ((worksheet.Cells["G74"].Value ?? (object)"").ToString() == "Pēc vērtības")
+                xmlWriter.WriteElementString("DivMetAmSTA", "3");
+            xmlWriter.WriteEndElement();
+            xmlWriter.WriteStartElement("OthCstAmSTA");
+            xmlWriter.WriteElementString("CurSTAElm", (worksheet.Cells["C75"].Value ?? (object)"").ToString());
+            xmlWriter.WriteElementString("AmSTAElm", (worksheet.Cells["B75"].Value ?? (object)"").ToString());
+            if ((worksheet.Cells["G75"].Value ?? (object)"").ToString() == "Manuāli")
+                xmlWriter.WriteElementString("DivMetAmSTA", "1");
+            else if ((worksheet.Cells["G75"].Value ?? (object)"").ToString() == "Pēc svara")
+                xmlWriter.WriteElementString("DivMetAmSTA", "2");
+            else if ((worksheet.Cells["G75"].Value ?? (object)"").ToString() == "Pēc vērtības")
+                xmlWriter.WriteElementString("DivMetAmSTA", "3");
+            xmlWriter.WriteEndElement();
+            xmlWriter.WriteStartElement("InnFreAmSTA");
+            xmlWriter.WriteElementString("CurSTAElm", (worksheet.Cells["C76"].Value ?? (object)"").ToString());
+            xmlWriter.WriteElementString("AmSTAElm", (worksheet.Cells["B76"].Value ?? (object)"").ToString());
+            if ((worksheet.Cells["G76"].Value ?? (object)"").ToString() == "Manuāli")
+                xmlWriter.WriteElementString("DivMetAmSTA", "1");
+            else if ((worksheet.Cells["G76"].Value ?? (object)"").ToString() == "Pēc svara")
+                xmlWriter.WriteElementString("DivMetAmSTA", "2");
+            else if ((worksheet.Cells["G76"].Value ?? (object)"").ToString() == "Pēc vērtības")
+                xmlWriter.WriteElementString("DivMetAmSTA", "3");
+            xmlWriter.WriteEndElement();
+            xmlWriter.WriteStartElement("DedAmSTA");
+            xmlWriter.WriteElementString("CurSTAElm", (worksheet.Cells["C77"].Value ?? (object)"").ToString());
+            xmlWriter.WriteElementString("AmSTAElm", (worksheet.Cells["B77"].Value ?? (object)"").ToString());
+            if ((worksheet.Cells["G77"].Value ?? (object)"").ToString() == "Manuāli")
+                xmlWriter.WriteElementString("DivMetAmSTA", "1");
+            else if ((worksheet.Cells["G77"].Value ?? (object)"").ToString() == "Pēc svara")
+                xmlWriter.WriteElementString("DivMetAmSTA", "2");
+            else if ((worksheet.Cells["G77"].Value ?? (object)"").ToString() == "Pēc vērtības")
+                xmlWriter.WriteElementString("DivMetAmSTA", "3");
+            xmlWriter.WriteEndElement();
+            xmlWriter.WriteStartElement("InlTAXAmSTA");
+            xmlWriter.WriteElementString("CurSTAElm", (worksheet.Cells["C79"].Value ?? (object)"").ToString());
+            xmlWriter.WriteElementString("AmSTAElm", (worksheet.Cells["B79"].Value ?? (object)"").ToString());
+            if ((worksheet.Cells["G79"].Value ?? (object)"").ToString() == "Manuāli")
+                xmlWriter.WriteElementString("DivMetAmSTA", "1");
+            else if ((worksheet.Cells["G79"].Value ?? (object)"").ToString() == "Nav jāsadala")
+                xmlWriter.WriteElementString("DivMetAmSTA", "4");
+            else if ((worksheet.Cells["G79"].Value ?? (object)"").ToString() == "Pēc svara")
+                xmlWriter.WriteElementString("DivMetAmSTA", "2");
+            else if ((worksheet.Cells["G79"].Value ?? (object)"").ToString() == "Pēc vērtības")
+                xmlWriter.WriteElementString("DivMetAmSTA", "3");
+            xmlWriter.WriteEndElement();
+            xmlWriter.WriteEndElement();
+            xmlWriter.Flush();
+            xmlWriter.Close();
+
+            File.WriteAllText(currentDirectory + "\\XML_IM_" + DateTime.Now.ToString("yyyyMMddHHmm") + ".xml", new UTF8Encoding(false).GetString(memoryStream.ToArray()));
         }
     }
+}
