@@ -24,13 +24,24 @@ namespace JYSK_EMDAS_XML //version 1.3
             random.Next(10);
             random.Next(10);
             XmlWriterSettings settings = new XmlWriterSettings();
+            settings.Indent = true;
             settings.Encoding = (Encoding)new UTF8Encoding(false);
+            settings.OmitXmlDeclaration = true;
+            settings.NewLineOnAttributes = true;
             MemoryStream memoryStream = new MemoryStream();
             XmlWriter xmlWriter = XmlWriter.Create((Stream)memoryStream, settings);
-
+            xmlWriter.WriteRaw("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>\r\n");
             xmlWriter.WriteStartElement("IcsIE");
 
-            xmlWriter.WriteElementString("MesTypMES20", "I01.1");
+            if ((worksheet.Cells["C6"].Value ?? (object)"").ToString() == "A")
+                xmlWriter.WriteElementString("MesTypMES20", "I01.1");
+            else if ((worksheet.Cells["C6"].Value ?? (object)"").ToString() == "C")
+                xmlWriter.WriteElementString("MesTypMES20", "I01.2");
+            else if ((worksheet.Cells["C6"].Value ?? (object)"").ToString() == "EIDR")
+                xmlWriter.WriteElementString("MesTypMES20", "I01.3");
+            else if ((worksheet.Cells["C6"].Value ?? (object)"").ToString() == "Y, Z")
+                xmlWriter.WriteElementString("MesTypMES20", "I01.4");
+
             xmlWriter.WriteStartElement("HEAHEA");
 
             xmlWriter.WriteElementString("RefNumEPT1", (worksheet.Cells["B7"].Value ?? (object)"").ToString());
@@ -82,29 +93,36 @@ namespace JYSK_EMDAS_XML //version 1.3
             xmlWriter.WriteElementString("TraModAtBorHEA76", (worksheet.Cells["B56"].Value ?? (object)"").ToString());
             xmlWriter.WriteElementString("CouOfDisCodHEA55", (worksheet.Cells["B61"].Value ?? (object)"").ToString());
             xmlWriter.WriteElementString("CouOfDesCodHEA30", (worksheet.Cells["B62"].Value ?? (object)"").ToString());
-            xmlWriter.WriteElementString("Cur126", (worksheet.Cells["C82"].Value ?? (object)"").ToString());
+            //xmlWriter.WriteElementString("Cur126", (worksheet.Cells["C81"].Value ?? (object)"").ToString());
 
             xmlWriter.WriteStartElement("STA");
             xmlWriter.WriteStartElement("InvAmSTA"); // 4/11 Rēķina kopsumma
-            xmlWriter.WriteElementString("CurSTAElm", (worksheet.Cells["B82"].Value ?? (object)"").ToString());
-            xmlWriter.WriteElementString("AmSTAElm", (worksheet.Cells["C82"].Value ?? (object)"").ToString());
-            xmlWriter.WriteEndElement();
+            xmlWriter.WriteElementString("AmSTAElm", (worksheet.Cells["B81"].Value ?? (object)"").ToString());
+            xmlWriter.WriteElementString("CurSTAElm", (worksheet.Cells["C81"].Value ?? (object)"").ToString());
+            xmlWriter.WriteEndElement(); 
             xmlWriter.WriteStartElement("AddCstAmSTA"); // 4/9 Pieskaitāmās izmaksas
-            xmlWriter.WriteElementString("CurSTAElm", (worksheet.Cells["B83"].Value ?? (object)"").ToString());
-            xmlWriter.WriteElementString("AmSTAElm", (worksheet.Cells["C83"].Value ?? (object)"").ToString());
+            xmlWriter.WriteElementString("AmSTAElm", (worksheet.Cells["B83"].Value ?? (object)"").ToString());
+            xmlWriter.WriteElementString("CurSTAElm", (worksheet.Cells["C83"].Value ?? (object)"").ToString());
             xmlWriter.WriteEndElement();
             xmlWriter.WriteStartElement("DedAmSTA"); // 4/9 Atskaitāmās izmaksas
-            xmlWriter.WriteElementString("CurSTAElm", (worksheet.Cells["B85"].Value ?? (object)"").ToString());
-            xmlWriter.WriteElementString("AmSTAElm", (worksheet.Cells["C85"].Value ?? (object)"").ToString());
+            xmlWriter.WriteElementString("AmSTAElm", (worksheet.Cells["B85"].Value ?? (object)"").ToString());
+            xmlWriter.WriteElementString("CurSTAElm", (worksheet.Cells["C85"].Value ?? (object)"").ToString());
             xmlWriter.WriteEndElement();
             xmlWriter.WriteStartElement("OthCstAmSTA"); // Pārējās izmaksas
-            xmlWriter.WriteElementString("CurSTAElm", (worksheet.Cells["B87"].Value ?? (object)"").ToString());
-            xmlWriter.WriteElementString("AmSTAElm", (worksheet.Cells["C87"].Value ?? (object)"").ToString());
+            xmlWriter.WriteElementString("AmSTAElm", (worksheet.Cells["B87"].Value ?? (object)"").ToString());
+            xmlWriter.WriteElementString("CurSTAElm", (worksheet.Cells["C87"].Value ?? (object)"").ToString());
             xmlWriter.WriteEndElement();
             xmlWriter.WriteStartElement("InlTAXAmSTA"); // Izmaksas par pakalpojumiem (PVN bāzei)
-            xmlWriter.WriteElementString("CurSTAElm", (worksheet.Cells["B89"].Value ?? (object)"").ToString());
-            xmlWriter.WriteElementString("AmSTAElm", (worksheet.Cells["C89"].Value ?? (object)"").ToString());
+            xmlWriter.WriteElementString("AmSTAElm", (worksheet.Cells["B89"].Value ?? (object)"").ToString());
+            xmlWriter.WriteElementString("CurSTAElm", (worksheet.Cells["C89"].Value ?? (object)"").ToString());
             xmlWriter.WriteEndElement();
+            if (worksheet.Cells["B89"].Value != null)
+            {
+                xmlWriter.WriteStartElement("InlTAXAmSTA"); // Izmaksas par pakalpojumiem (PVN bāzei)
+                xmlWriter.WriteElementString("AmSTAElm", (worksheet.Cells["B90"].Value ?? (object)"").ToString());
+                xmlWriter.WriteElementString("CurSTAElm", (worksheet.Cells["C90"].Value ?? (object)"").ToString());
+                xmlWriter.WriteEndElement();
+            }
             xmlWriter.WriteEndElement();
 
 
