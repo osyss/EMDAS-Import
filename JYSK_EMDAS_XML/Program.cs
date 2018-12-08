@@ -99,16 +99,8 @@ namespace JYSK_EMDAS_XML //version 1.3
             xmlWriter.WriteStartElement("InvAmSTA"); // 4/11 Rēķina kopsumma
             xmlWriter.WriteElementString("AmSTAElm", (worksheet.Cells["B81"].Value ?? (object)"").ToString());
             xmlWriter.WriteElementString("CurSTAElm", (worksheet.Cells["C81"].Value ?? (object)"").ToString());
-            if ((worksheet.Cells["G81"].Value ?? (object)"").ToString() == "Manuāli")
-                xmlWriter.WriteElementString("DivMetAmSTA", "1");
-            else if ((worksheet.Cells["G81"].Value ?? (object)"").ToString() == "Pēc svara")
-                xmlWriter.WriteElementString("DivMetAmSTA", "2");
-            else if ((worksheet.Cells["G81"].Value ?? (object)"").ToString() == "Pēc vērtības")
-                xmlWriter.WriteElementString("DivMetAmSTA", "3");
-            else if ((worksheet.Cells["G81"].Value ?? (object)"").ToString() == "Nav jāsadala")
-                xmlWriter.WriteElementString("DivMetAmSTA", "4");
+            xmlWriter.WriteElementString("DivMetAmSTA", "1");
             xmlWriter.WriteEndElement();
-
             if (worksheet.Cells["B83"].Value != null)
             {
                 xmlWriter.WriteStartElement("AddCstAmSTA"); // 4/9 Pieskaitāmās izmaksas
@@ -224,7 +216,8 @@ namespace JYSK_EMDAS_XML //version 1.3
                     xmlWriter.WriteStartElement("GooInvSTA");
                     xmlWriter.WriteElementString("CurSTAElm", (worksheet.Cells["C81"].Value ?? (object)"").ToString());
                     xmlWriter.WriteElementString("AmSTAElm", (worksheet.Cells[index1, 5].Value ?? (object)"").ToString());
-                    xmlWriter.WriteEndElement();
+                xmlWriter.WriteElementString("DivMetAmSTA", "1");
+                xmlWriter.WriteEndElement();
                     
                     for (int index3 = 35; index3 > 10; index3=index3+3)
                     { 
@@ -250,6 +243,7 @@ namespace JYSK_EMDAS_XML //version 1.3
                     xmlWriter.WriteElementString("TitAR212", (worksheet.Cells[index1, 23].Value ?? (object)"").ToString());
                     xmlWriter.WriteElementString("PreDocRefAR26", (worksheet.Cells[index1, 7].Value ?? (object)"").ToString());
                     xmlWriter.WriteElementString("PreDocItemNumb", (worksheet.Cells[index1, 10].Value ?? (object)"").ToString());
+                    xmlWriter.WriteElementString("AllGoodsFlag", "1");
                     xmlWriter.WriteEndElement();
                     xmlWriter.WriteEndElement();
                     index1++;
