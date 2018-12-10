@@ -214,8 +214,8 @@ namespace JYSK_EMDAS_XML //version 1.3
                     xmlWriter.WriteElementString("NetMasGDS48", (worksheet.Cells[index1, 3].Value ?? (object)"").ToString());
                     xmlWriter.WriteElementString("CouOfOriCodGDS63", (worksheet.Cells[index1, 8].Value ?? (object)"").ToString());
                     xmlWriter.WriteStartElement("GooInvSTA");
-                    xmlWriter.WriteElementString("CurSTAElm", (worksheet.Cells["C81"].Value ?? (object)"").ToString());
-                    xmlWriter.WriteElementString("AmSTAElm", (worksheet.Cells[index1, 5].Value ?? (object)"").ToString());
+                xmlWriter.WriteElementString("AmSTAElm", (worksheet.Cells[index1, 5].Value ?? (object)"").ToString());
+                xmlWriter.WriteElementString("CurSTAElm", (worksheet.Cells["C81"].Value ?? (object)"").ToString());   
                 xmlWriter.WriteElementString("DivMetAmSTA", "1");
                 xmlWriter.WriteEndElement();
                     
