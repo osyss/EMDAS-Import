@@ -46,6 +46,7 @@ namespace JYSK_EMDAS_XML //version 1.3
 
             xmlWriter.WriteElementString("RefNumEPT1", (worksheet.Cells["B7"].Value ?? (object)"").ToString());
             xmlWriter.WriteElementString("TypOfDecHEA24", (worksheet.Cells["B6"].Value ?? (object)"").ToString() + (worksheet.Cells["C6"].Value ?? (object)"").ToString());
+            xmlWriter.WriteElementString("CusProCodGDS379", (worksheet.Cells["B5"].Value ?? (object)"").ToString());
             if ((worksheet.Cells["B10"].Value ?? (object)"").ToString() == "Nav pārstāvības")
                 xmlWriter.WriteElementString("TypOfPriGHEA1003", "1");
             else if ((worksheet.Cells["B10"].Value ?? (object)"").ToString() == "Tieša pārstāvība")
@@ -168,7 +169,7 @@ namespace JYSK_EMDAS_XML //version 1.3
                     xmlWriter.WriteElementString("DivMetAmSTA", "4");
                 xmlWriter.WriteEndElement();
             }
-
+            
             if (worksheet.Cells["B90"].Value != null)
             {
                 xmlWriter.WriteStartElement("InlTAXAmSTA"); // Izmaksas par pakalpojumiem (PVN bāzei)
@@ -184,9 +185,9 @@ namespace JYSK_EMDAS_XML //version 1.3
                 else if ((worksheet.Cells["G90"].Value ?? (object)"").ToString() == "Nav jāsadala")
                     xmlWriter.WriteElementString("DivMetAmSTA", "4");
                 xmlWriter.WriteEndElement();
-            }
+            } 
             xmlWriter.WriteEndElement();
-
+            
 
             xmlWriter.WriteStartElement("GUARANTEE");
             xmlWriter.WriteElementString("GuaTypGUATyp", (worksheet.Cells["B93"].Value ?? (object)"").ToString());
@@ -207,19 +208,46 @@ namespace JYSK_EMDAS_XML //version 1.3
                     xmlWriter.WriteStartElement("GOOITEGDS");
                     xmlWriter.WriteElementString("IteNumB32F1", (worksheet.Cells[index1, 1].Value ?? (object)"").ToString());
                     xmlWriter.WriteElementString("ComCodTarCodGDS10", (worksheet.Cells[index1, 6].Value ?? (object)"").ToString());
-                    //   xmlWriter.WriteElementString("GooDesGDS23", (worksheet.Cells[index1, 1].Value ?? (object)"").ToString());
+                    xmlWriter.WriteElementString("GooDesGDS23", (worksheet.Cells[index1, 20].Value ?? (object)"").ToString());
                     xmlWriter.WriteElementString("CusProCodGDS379", (worksheet.Cells[index1, 26].Value ?? (object)"").ToString());
                     xmlWriter.WriteElementString("AddCusProCodGDS340", (worksheet.Cells[index1, 27].Value ?? (object)"").ToString());
                     xmlWriter.WriteElementString("GroMasGDS46", (worksheet.Cells[index1, 4].Value ?? (object)"").ToString());
                     xmlWriter.WriteElementString("NetMasGDS48", (worksheet.Cells[index1, 3].Value ?? (object)"").ToString());
+                if (worksheet.Cells[index1, 18].Value != null)
+                {
+                    xmlWriter.WriteElementString("QuaOfGooGDS376", (worksheet.Cells[index1, 18].Value ?? (object)"").ToString());
+                }
                     xmlWriter.WriteElementString("CouOfOriCodGDS63", (worksheet.Cells[index1, 8].Value ?? (object)"").ToString());
+                    xmlWriter.WriteElementString("PreB36", (worksheet.Cells[index1, 28].Value ?? (object)"").ToString());
+                    xmlWriter.WriteElementString("AppRecMet", (worksheet.Cells[index1, 29].Value ?? (object)"").ToString());
                     xmlWriter.WriteStartElement("GooInvSTA");
                 xmlWriter.WriteElementString("AmSTAElm", (worksheet.Cells[index1, 5].Value ?? (object)"").ToString());
                 xmlWriter.WriteElementString("CurSTAElm", (worksheet.Cells["C81"].Value ?? (object)"").ToString());   
                 xmlWriter.WriteElementString("DivMetAmSTA", "1");
                 xmlWriter.WriteEndElement();
-                    
-                    for (int index3 = 35; index3 > 10; index3=index3+3)
+                xmlWriter.WriteStartElement("AddGooAmSTA");
+                xmlWriter.WriteElementString("PozID", "206928335");
+                xmlWriter.WriteElementString("CurSTAElm", (worksheet.Cells[index1, 12].Value ?? (object)"").ToString());
+                xmlWriter.WriteEndElement();
+
+                if (worksheet.Cells["B89"].Value != null)
+                {
+                    xmlWriter.WriteStartElement("InlGooTAXAmSTA");
+                    xmlWriter.WriteElementString("PozID", "206928336");
+                    xmlWriter.WriteElementString("CurSTAElm", (worksheet.Cells[index1, 17].Value ?? (object)"").ToString());
+                    xmlWriter.WriteElementString("ItemTaxManCal", "1");
+                    xmlWriter.WriteEndElement();
+                }
+                if (worksheet.Cells["B90"].Value != null)
+                {
+                    xmlWriter.WriteStartElement("InlGooTAXAmSTA");
+                    xmlWriter.WriteElementString("PozID", "206928337");
+                    xmlWriter.WriteElementString("CurSTAElm", (worksheet.Cells[index1, 16].Value ?? (object)"").ToString());
+                    xmlWriter.WriteElementString("ItemTaxManCal", "1");
+                    xmlWriter.WriteEndElement();
+                }
+
+                for (int index3 = 35; index3 > 10; index3=index3+3)
                     { 
                         if (worksheet.Cells[index1, index3].Value == null)
                         { 
@@ -233,7 +261,7 @@ namespace JYSK_EMDAS_XML //version 1.3
                     
                 }
                 afterProDoc:
-                    xmlWriter.WriteStartElement("PACGS2");
+                   xmlWriter.WriteStartElement("PACGS2");
                     xmlWriter.WriteElementString("KinOfPacGS23", (worksheet.Cells[index1, 31].Value ?? (object)"").ToString());
                     xmlWriter.WriteElementString("MarNumOfPacGS21", (worksheet.Cells[index1, 32].Value ?? (object)"").ToString());
                     xmlWriter.WriteElementString("NumOfPacGS24", (worksheet.Cells[index1, 2].Value ?? (object)"").ToString());
