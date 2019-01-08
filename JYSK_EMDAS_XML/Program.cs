@@ -91,7 +91,10 @@ namespace JYSK_EMDAS_XML //version 1.3
             xmlWriter.WriteElementString("DesOfDelCou", (worksheet.Cells["B48"].Value ?? (object)"").ToString());
             xmlWriter.WriteElementString("DesOfDelReqHEA993", (worksheet.Cells["B49"].Value ?? (object)"").ToString());
             xmlWriter.WriteElementString("InlTraModHEA75", (worksheet.Cells["B53"].Value ?? (object)"").ToString());
+            xmlWriter.WriteElementString("IdeOfMeaOfTraAtDTYPE", (worksheet.Cells["B54"].Value ?? (object)"").ToString());
+            xmlWriter.WriteElementString("IdeOfMeaOfTraAtDHEA78", (worksheet.Cells["B55"].Value ?? (object)"").ToString());
             xmlWriter.WriteElementString("TraModAtBorHEA76", (worksheet.Cells["B56"].Value ?? (object)"").ToString());
+            xmlWriter.WriteElementString("NatOfMeaOfTraCroHEA87", (worksheet.Cells["B57"].Value ?? (object)"").ToString());
             xmlWriter.WriteElementString("CouOfDisCodHEA55", (worksheet.Cells["B61"].Value ?? (object)"").ToString());
             xmlWriter.WriteElementString("CouOfDesCodHEA30", (worksheet.Cells["B62"].Value ?? (object)"").ToString());
             //xmlWriter.WriteElementString("Cur126", (worksheet.Cells["C81"].Value ?? (object)"").ToString());
@@ -227,22 +230,25 @@ namespace JYSK_EMDAS_XML //version 1.3
                 xmlWriter.WriteEndElement();
                 xmlWriter.WriteStartElement("AddGooAmSTA");
                 xmlWriter.WriteElementString("PozID", "206928335");
-                xmlWriter.WriteElementString("CurSTAElm", (worksheet.Cells[index1, 12].Value ?? (object)"").ToString());
+                xmlWriter.WriteElementString("AmSTAElm", (worksheet.Cells[index1, 12].Value ?? (object)"").ToString());
+                xmlWriter.WriteElementString("CurSTAElm", (worksheet.Cells["C83"].Value ?? (object)"").ToString());
                 xmlWriter.WriteEndElement();
 
                 if (worksheet.Cells["B89"].Value != null)
                 {
                     xmlWriter.WriteStartElement("InlGooTAXAmSTA");
-                    xmlWriter.WriteElementString("PozID", "206928336");
-                    xmlWriter.WriteElementString("CurSTAElm", (worksheet.Cells[index1, 17].Value ?? (object)"").ToString());
+                    xmlWriter.WriteElementString("PozID", "206928338");
+                    xmlWriter.WriteElementString("AmSTAElm", (worksheet.Cells[index1, 17].Value ?? (object)"").ToString());
+                    xmlWriter.WriteElementString("CurSTAElm", (worksheet.Cells["C89"].Value ?? (object)"").ToString());
                     xmlWriter.WriteElementString("ItemTaxManCal", "1");
                     xmlWriter.WriteEndElement();
                 }
                 if (worksheet.Cells["B90"].Value != null)
                 {
                     xmlWriter.WriteStartElement("InlGooTAXAmSTA");
-                    xmlWriter.WriteElementString("PozID", "206928337");
-                    xmlWriter.WriteElementString("CurSTAElm", (worksheet.Cells[index1, 16].Value ?? (object)"").ToString());
+                    xmlWriter.WriteElementString("PozID", "206928339");
+                    xmlWriter.WriteElementString("AmSTAElm", (worksheet.Cells[index1, 16].Value ?? (object)"").ToString());
+                    xmlWriter.WriteElementString("CurSTAElm", (worksheet.Cells["C90"].Value ?? (object)"").ToString());
                     xmlWriter.WriteElementString("ItemTaxManCal", "1");
                     xmlWriter.WriteEndElement();
                 }
