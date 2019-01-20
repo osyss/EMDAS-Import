@@ -228,11 +228,22 @@ namespace JYSK_EMDAS_XML //version 1.3
                 xmlWriter.WriteElementString("CurSTAElm", (worksheet.Cells["C81"].Value ?? (object)"").ToString());   
                 xmlWriter.WriteElementString("DivMetAmSTA", "1");
                 xmlWriter.WriteEndElement();
-                xmlWriter.WriteStartElement("AddGooAmSTA");
-                xmlWriter.WriteElementString("PozID", "206928335");
-                xmlWriter.WriteElementString("AmSTAElm", (worksheet.Cells[index1, 12].Value ?? (object)"").ToString());
-                xmlWriter.WriteElementString("CurSTAElm", (worksheet.Cells["C83"].Value ?? (object)"").ToString());
-                xmlWriter.WriteEndElement();
+                if (worksheet.Cells["B83"].Value != null)
+                {
+                    xmlWriter.WriteStartElement("AddGooAmSTA");
+                    xmlWriter.WriteElementString("PozID", "206928335");
+                    xmlWriter.WriteElementString("AmSTAElm", (worksheet.Cells[index1, 12].Value ?? (object)"").ToString());
+                    xmlWriter.WriteElementString("CurSTAElm", (worksheet.Cells["C83"].Value ?? (object)"").ToString());
+                    if ((worksheet.Cells["G83"].Value ?? (object)"").ToString() == "Manuāli")
+                        xmlWriter.WriteElementString("DivMetAmSTA", "1");
+                    else if ((worksheet.Cells["G83"].Value ?? (object)"").ToString() == "Pēc svara")
+                        xmlWriter.WriteElementString("DivMetAmSTA", "2");
+                    else if ((worksheet.Cells["G83"].Value ?? (object)"").ToString() == "Pēc vērtības")
+                        xmlWriter.WriteElementString("DivMetAmSTA", "3");
+                    else if ((worksheet.Cells["G83"].Value ?? (object)"").ToString() == "Nav jāsadala")
+                        xmlWriter.WriteElementString("DivMetAmSTA", "4");
+                    xmlWriter.WriteEndElement();
+                }
 
                 if (worksheet.Cells["B89"].Value != null)
                 {
@@ -240,7 +251,14 @@ namespace JYSK_EMDAS_XML //version 1.3
                     xmlWriter.WriteElementString("PozID", "206928338");
                     xmlWriter.WriteElementString("AmSTAElm", (worksheet.Cells[index1, 17].Value ?? (object)"").ToString());
                     xmlWriter.WriteElementString("CurSTAElm", (worksheet.Cells["C89"].Value ?? (object)"").ToString());
-                    xmlWriter.WriteElementString("ItemTaxManCal", "1");
+                    if ((worksheet.Cells["G89"].Value ?? (object)"").ToString() == "Manuāli")
+                        xmlWriter.WriteElementString("DivMetAmSTA", "1");
+                    else if ((worksheet.Cells["G89"].Value ?? (object)"").ToString() == "Pēc svara")
+                        xmlWriter.WriteElementString("DivMetAmSTA", "2");
+                    else if ((worksheet.Cells["G89"].Value ?? (object)"").ToString() == "Pēc vērtības")
+                        xmlWriter.WriteElementString("DivMetAmSTA", "3");
+                    else if ((worksheet.Cells["G89"].Value ?? (object)"").ToString() == "Nav jāsadala")
+                        xmlWriter.WriteElementString("DivMetAmSTA", "4");
                     xmlWriter.WriteEndElement();
                 }
                 if (worksheet.Cells["B90"].Value != null)
@@ -249,7 +267,14 @@ namespace JYSK_EMDAS_XML //version 1.3
                     xmlWriter.WriteElementString("PozID", "206928339");
                     xmlWriter.WriteElementString("AmSTAElm", (worksheet.Cells[index1, 16].Value ?? (object)"").ToString());
                     xmlWriter.WriteElementString("CurSTAElm", (worksheet.Cells["C90"].Value ?? (object)"").ToString());
-                    xmlWriter.WriteElementString("ItemTaxManCal", "1");
+                                   if ((worksheet.Cells["G90"].Value ?? (object)"").ToString() == "Manuāli")
+                    xmlWriter.WriteElementString("DivMetAmSTA", "1");
+                else if ((worksheet.Cells["G90"].Value ?? (object)"").ToString() == "Pēc svara")
+                    xmlWriter.WriteElementString("DivMetAmSTA", "2");
+                else if ((worksheet.Cells["G90"].Value ?? (object)"").ToString() == "Pēc vērtības")
+                    xmlWriter.WriteElementString("DivMetAmSTA", "3");
+                else if ((worksheet.Cells["G90"].Value ?? (object)"").ToString() == "Nav jāsadala")
+                    xmlWriter.WriteElementString("DivMetAmSTA", "4");
                     xmlWriter.WriteEndElement();
                 }
 
