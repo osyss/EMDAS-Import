@@ -232,7 +232,7 @@ namespace JYSK_EMDAS_XML //version 2.4
                 {
                     xmlWriter.WriteStartElement("AddGooAmSTA");
                     xmlWriter.WriteElementString("PozID", "206928335");
-                    xmlWriter.WriteElementString("AmSTAElm", (worksheet.Cells[index1, 12].Value ?? (object)"").ToString());
+                    xmlWriter.WriteElementString("AmSTAElm", (worksheet.Cells[index1, 13].Value ?? (object)"").ToString());
                     xmlWriter.WriteElementString("CurSTAElm", (worksheet.Cells["C83"].Value ?? (object)"").ToString());
                     if ((worksheet.Cells["G83"].Value ?? (object)"").ToString() == "Manuāli")
                         xmlWriter.WriteElementString("DivMetAmSTA", "1");
