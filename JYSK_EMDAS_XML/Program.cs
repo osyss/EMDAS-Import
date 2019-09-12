@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading;
 using System.Xml;
 
-namespace JYSK_EMDAS_XML //version 2.4
+namespace JYSK_EMDAS_XML //version 2.7
 {
     class Program
     {
