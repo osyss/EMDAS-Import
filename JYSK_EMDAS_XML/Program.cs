@@ -218,7 +218,7 @@ namespace JYSK_EMDAS_XML //version 2.8
 
 
 
-            for (int index2 = 103; index2 > 50; index2++)
+            for (int index2 = 104; index2 > 50; index2++)
             {
                 if (worksheet.Cells[index2, 1].Value == null)
                 {
