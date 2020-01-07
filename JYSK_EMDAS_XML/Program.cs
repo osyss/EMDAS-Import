@@ -1,4 +1,4 @@
-﻿using OfficeOpenXml;
+using OfficeOpenXml;
 using System;
 using System.Globalization;
 using System.IO;
@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading;
 using System.Xml;
 
-namespace JYSK_EMDAS_XML //version 2.8
+namespace JYSK_EMDAS_XML //version 2.9
 {
     class Program
     {
